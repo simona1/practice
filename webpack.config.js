@@ -2,23 +2,23 @@ const path = require('path');
 
 module.exports = {
   entry: './src/client/main.tsx',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true,
-        },
-        exclude: /node_modules/,
-      },
-    ],
+  output: {
+    filename: 'client.js',
+    path: path.resolve(__dirname, 'build'),
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'build'),
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+        },
+      },
+    ],
   },
 };

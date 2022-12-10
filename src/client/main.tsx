@@ -12,13 +12,13 @@ function AppRoot() {
   const [sidesAsString, setSidesAsString] = useState('');
 
   const sidesAsInt = validatePosInt(sidesAsString);
-  const canSubmit = Number.isNaN(sidesAsInt) || sidesAsInt == null;
+  const cannotSubmit = sidesAsInt == null;
 
-  const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeDieSides = (e: ChangeEvent<HTMLInputElement>) => {
     setSidesAsString(e.target.value);
   };
 
-  const onSubmit = canSubmit
+  const onSubmit = cannotSubmit
     ? undefined
     : async () => {
         setErrorMessage(null);
@@ -38,19 +38,19 @@ function AppRoot() {
         setIsSubmitting(false);
       };
 
-  const isDisabled = onSubmit == null || isSubmitting;
+  const isSubmitDisabled = onSubmit == null || isSubmitting;
 
   return (
     <>
-      Die roll
+      Die roll{' '}
       <input
         type="text"
         placeholder="type die sides"
         value={sidesAsString}
-        onChange={onChangeValue}
+        onChange={onChangeDieSides}
         disabled={isSubmitting}
       />
-      <button onClick={onSubmit} disabled={isDisabled}>
+      <button onClick={onSubmit} disabled={isSubmitDisabled}>
         Submit
       </button>
       {dieValue !== 0 && <div>{`Die roll value: ${dieValue}`} </div>}
@@ -62,9 +62,8 @@ function AppRoot() {
 }
 
 function main() {
-  const div = document.getElementById('root')!;
-  const root = ReactDOM.createRoot(div);
-  root.render(<AppRoot />);
+  const container = document.getElementById('root')!;
+  ReactDOM.createRoot(container).render(<AppRoot />);
 }
 
 window.addEventListener('load', main, { once: true });

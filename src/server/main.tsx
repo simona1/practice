@@ -2,10 +2,12 @@ import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
+
 import { dieRoll } from './utils';
 
-const app = express();
 const PORT = 5000;
+
+const app = express();
 
 app.use((req, res, next) => {
   console.log('Logging path:', req.path);
@@ -19,8 +21,8 @@ app.use((req, res, next) => {
   }
   console.log('Parsing body');
   const data: string[] = [];
-  req.on('data', (d: Buffer) => {
-    data.push(d.toString());
+  req.on('data', (buf: Buffer) => {
+    data.push(buf.toString());
   });
   req.on('end', () => {
     try {
@@ -39,7 +41,7 @@ app.get('/', (req, res) => {
       <html>
         <head>
           <title>Practice</title>
-          <script type="text/javascript" src="/index.js" />
+          <script type="text/javascript" src="/client.js" />
         </head>
         <body>
           <div id="root">Loading...</div>
@@ -49,16 +51,16 @@ app.get('/', (req, res) => {
   );
 });
 
-app.get('/index.js', (req, res) => {
+app.get('/client.js', (req, res) => {
   res.type('text/javascript');
 
-  const data = fs.readFileSync('build/main.js', 'utf8');
+  const data = fs.readFileSync('build/client.js', 'utf8');
 
   res.send(data);
 });
 
 const ROLL_DIE_PATH = '/api/v1/rolldie/';
-app.post(ROLL_DIE_PATH, (req, res, next) => {
+app.post(ROLL_DIE_PATH, (req, res) => {
   const { dieSides } = req.body;
   res.type('application/json');
   const roll = dieRoll(dieSides ?? 6);
