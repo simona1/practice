@@ -2,6 +2,7 @@ import * as ReactDOM from 'react-dom/client';
 import React, { ChangeEvent, useState } from 'react';
 
 import { validatePosInt } from '../server/utils';
+import MarqueeComponent from './MarqueeComponent';
 
 const PATH = '/api/v1/rolldie/';
 
@@ -57,6 +58,7 @@ function AppRoot() {
       {errorMessage != null && (
         <div>{`An error has occured: ${errorMessage}`}</div>
       )}
+      <MarqueeComponent />
     </>
   );
 }
