@@ -7,19 +7,18 @@ const MarqueeComponent = () => {
   const [position, setPosition] = useState(100);
 
   useEffect(() => {
-    let width = 0;
-    if (containerRef.current != null && elementRef.current != null) {
-      width =
-        (elementRef.current.clientWidth * 100) /
-        containerRef.current.clientWidth;
-    }
-    const timeoutId = setInterval(
-      () => setPosition((prev) => (prev <= -width ? 100 : prev - 0.2)),
-      100,
-    );
+    const timeoutId = setInterval(() => {
+      let width = 0;
+      if (containerRef.current != null && elementRef.current != null) {
+        width =
+          (elementRef.current.clientWidth * 100) /
+          containerRef.current.clientWidth;
+      }
+      setPosition((prev) => (prev <= -width ? 100 : prev - 0.2));
+    }, 100);
 
     return () => clearInterval(timeoutId);
-  }, [position]);
+  }, []);
 
   const marqStyle: Record<string, string> = {
     display: 'inline-block',
